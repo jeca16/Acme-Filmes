@@ -15,11 +15,14 @@ const getListarFilmes = function (){
 
 // fazer uma função para listar o filme de acordo com o id escolhido
 const getFilmesId = function (id){
+    let dados
     Filmes.filmes.filmes.forEach(function(detalhes_filme){
         if(id == detalhes_filme.id){
-            return detalhes_filme
+            dados = detalhes_filme
         }
     })
+
+    return dados
 }
 
 module.exports = {
