@@ -1,9 +1,26 @@
 /*****************************************************************************
- * objetivo: fazer dois endpoints de acordo com o que foi instruido          *
+ * objetivo: arquivo para realizar as aquisicoes de filmes                   *
  * data: 23/01/24                                                            *
  * autor: Jessica Pereira dos Santos                                         *
  * versão:1.0                                                                *
  ****************************************************************************/
+
+/*************************************************************************************
+ * para realizar a conexao com o banco de dadps precisamos utilizar uma dependecia:  *
+ *       - sequelize ORM                                                             *
+ *       - prisma    ORM                                                             *
+ *       - fastfy    ORM                                                             *
+ *                                                                                   *
+ * prisma -  para utilizar o prisma precisamos instar as seguintes dependecias:      *
+ *   npm install prisma --save                                                       *
+ *   npm install @prisma/client --save                                               *
+ *                                                                                   *
+ *     apos a instalacao do prisma devemos rodar o comando abaixo para incializar    *
+ *                                o prima:                                           *
+ *   npx prisma init                                                                 *
+*************************************************************************************/
+
+
 
 
 const express = require('express');
