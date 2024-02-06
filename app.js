@@ -39,6 +39,9 @@ app.use((request, response, next)=>{
     next();
 })
 
+/**************** imports de arquivos e bibliotecas do projeto ****************/
+const controllerFilmes = require('./controller/controller_filme.js')
+
 app.get('/v1/AcmeFilmes/filmes', cors(), async function(request, response, next){
     let listarFilmes = require('./controller/funções')
     let filme = listarFilmes.getListarFilmes()
@@ -61,4 +64,10 @@ app.get('/v1/AcmeFilmes/filme/:id', cors(), async function(request, response,nex
 })
 app.listen(8080, function(){
     console.log('API funcionando e aguardando requisições')
+})
+
+
+
+app.get('v2/AcmeFilmes/filmes', cors(), async function(request, response, next){
+
 })
