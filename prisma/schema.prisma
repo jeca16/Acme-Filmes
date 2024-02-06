@@ -9,3 +9,9 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+//exemplo de como criar uma tabela no bd usando o orm do prisma
+model tbl_teste {
+  id Int @id @default(autoincrement())
+  nome String 
+}

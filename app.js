@@ -40,8 +40,8 @@ app.use((request, response, next)=>{
 })
 
 /**************** imports de arquivos e bibliotecas do projeto ****************/
-const controllerFilmes = require('./controller/controller_filme.js')
-
+       const controllerFilmes = require('./controller/controller_filme.js')
+/******************************************************************************/ 
 app.get('/v1/AcmeFilmes/filmes', cors(), async function(request, response, next){
     let listarFilmes = require('./controller/funções')
     let filme = listarFilmes.getListarFilmes()
@@ -62,12 +62,21 @@ app.get('/v1/AcmeFilmes/filme/:id', cors(), async function(request, response,nex
         response.json({erro: "não foi possivel encontrar o filme com este id"})
     }
 })
-app.listen(8080, function(){
-    console.log('API funcionando e aguardando requisições')
+
+app.get('/v2/AcmeFilmes/filmes', cors(), async function(request, response, next){
+
+    let dadosFilmes = await controllerFilmes.getListarFilmes() 
+
+    if(dadosFilmes){
+        response.json(dadosFilmes)
+        response.status (200);
+    }else{
+        response.json({message: 'nenhum registro encontrado'})
+        response.status(404)
+    }
 })
 
 
-
-app.get('v2/AcmeFilmes/filmes', cors(), async function(request, response, next){
-
+app.listen(8080, function(){
+    console.log('API funcionando e aguardando requisições')
 })
