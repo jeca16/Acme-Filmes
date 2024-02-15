@@ -25,7 +25,19 @@ const getFilmesId = function (id){
     return dados
 }
 
+const getFilmesNome = function (nome){
+    let info
+    Filmes.filmes.filmes.forEach(function(infoFilme){
+        if(nome == infoFilme.nome){
+            info = infoFilme
+        }
+    })
+
+    return info
+}
+
 module.exports = {
     getListarFilmes,
-    getFilmesId
+    getFilmesId,
+    getFilmesNome
 }

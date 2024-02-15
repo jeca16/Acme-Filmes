@@ -46,6 +46,20 @@ const getListarFilmes = async function(){
     }
 }
 
+const getFilmeNome = async function(nome){
+    let nomeFilme = nome
+    let infoFilmeJson = {}
+    let info = await FilmesDAO.selectByNameFilme(nomeFilme)
+
+    if(info){
+        infoFilmeJson.filmes = info
+        infoFilmeJson.status_code = 200;
+        return infoFilmeJson
+    }else{
+        return false
+    }
+}
+
 // funcao para buscar um filme pelo id 
 const getBuscarFilme = async function(){
 
@@ -56,6 +70,7 @@ module.exports = {
     setAtualizarFilme,
     setExcluirFilme,
     getListarFilmes,
-    getBuscarFilme
+    getBuscarFilme,
+    getFilmeNome
 }
 

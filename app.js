@@ -30,7 +30,7 @@ const { filmes } = require('./modulo/filmes');
 
 const app = express()
 
-app.use((request, response, next)=>{
+app.use((request, response, next) => {
     response.header('Access-Control-Allow-Origin', '*')
     response.header('Access-Control-Allow-Methods', 'GET')
 
@@ -40,43 +40,57 @@ app.use((request, response, next)=>{
 })
 
 /**************** imports de arquivos e bibliotecas do projeto ****************/
-       const controllerFilmes = require('./controller/controller_filme.js')
-/******************************************************************************/ 
-app.get('/v1/AcmeFilmes/filmes', cors(), async function(request, response, next){
+const controllerFilmes = require('./controller/controller_filme.js')
+/******************************************************************************/
+app.get('/v1/AcmeFilmes/filmes', cors(), async function (request, response, next) {
     let listarFilmes = require('./controller/funções')
     let filme = listarFilmes.getListarFilmes()
     response.json(filme)
     response.status(200)
 })
 
-app.get('/v1/AcmeFilmes/filme/:id', cors(), async function(request, response,next){
+app.get('/v1/AcmeFilmes/filme/:id', cors(), async function (request, response, next) {
     let Id = request.params.id
     let FilmesDetalhes = require('./controller/funções')
     let FilmesId = FilmesDetalhes.getFilmesId(Id)
 
-    if(FilmesId){
+    if (FilmesId) {
         response.json(FilmesId)
         response.status(200)
-    }else{
+    } else {
         response.status(404)
-        response.json({erro: "não foi possivel encontrar o filme com este id"})
+        response.json({ erro: "não foi possivel encontrar o filme com este id" })
     }
 })
 
-app.get('/v2/AcmeFilmes/filmes', cors(), async function(request, response, next){
+app.get('/v2/AcmeFilmes/filmes', cors(), async function (request, response, next) {
 
-    let dadosFilmes = await controllerFilmes.getListarFilmes() 
+    let dadosFilmes = await controllerFilmes.getListarFilmes()
 
-    if(dadosFilmes){
+    if (dadosFilmes) {
         response.json(dadosFilmes)
-        response.status (200);
-    }else{
-        response.json({message: 'nenhum registro encontrado'})
+        response.status(200);
+    } else {
+        response.json({ message: 'nenhum registro encontrado' })
         response.status(404)
     }
 })
 
+app.get('/v2/AcmeFilmes/filmes/filtro', cors(), async function (request, response, next) {
+    let nomeFilme = request.query.nomeDoFilme
+    let infoFilmes = await controllerFilmes.getFilmeNome(nomeFilme)
 
-app.listen(8080, function(){
+    if (infoFilmes) {
+        response.json(infoFilmes)
+        response.status(200);
+    } else {
+        response.json({ message: 'nenhum registro encontrado' })
+        response.status(404)
+    }
+
+})
+
+
+app.listen(8080, function () {
     console.log('API funcionando e aguardando requisições')
 })
