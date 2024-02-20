@@ -35,15 +35,15 @@ const getListarFilmes = async function () {
 
     // verifica se existe, dados retornados do DAO
     if (dadosFilmes) {
-        // criando o json para retornar para o app
+        
         filmesJson.filmes = dadosFilmes;
         filmesJson.quantidade = dadosFilmes.length;
         filmesJson.status_code = 200;
-        // retorna o json montado
+        
         return filmesJson
     } else {
-        // return flse quando não houverem dados 
-        return false
+       
+        return message.ERROR_INTERNAL_SERVER_BD
     }
 }
 
@@ -61,6 +61,10 @@ const getListarFilmes = async function () {
 //     }
 // }
 
+
+
+
+
 // funcao para buscar um filme pelo id 
 const getBuscarFilme = async function (id) {
 
@@ -68,19 +72,20 @@ const getBuscarFilme = async function (id) {
     let idFilme = id
     let filmeJSON = {}
 
-    if (idFilme == '' || idFilme == undefined || isNaN(idFilme)) {
-        return message.ERROR_INVALID_ID
-    } else {
-        let dadosFilme = await FilmesDAO.selectByIdFilme(idFilme)
+    let dadosFilme = await FilmesDAO.selectByIdFilme(idFilme)
 
-        if (dadosFilme) {
+    if (dadosFilme) {
+        if (dadosFilme.length > 0) {
             filmeJSON.filme = dadosFilme,
                 filmeJSON.status_code = 200
 
             return filmeJSON
-        }else{
+        } else {
             return message.ERROR_NOT_FOUND
         }
+
+    } else {
+        return message.ERROR_INTERNAL_SERVER_BD
     }
 
 
