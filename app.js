@@ -42,6 +42,7 @@ app.use((request, response, next) => {
 /**************** imports de arquivos e bibliotecas do projeto ****************/
 const controllerFilmes = require('./controller/controller_filme.js')
 /******************************************************************************/
+
 app.get('/v1/AcmeFilmes/filmes', cors(), async function (request, response, next) {
     let listarFilmes = require('./controller/funções')
     let filme = listarFilmes.getListarFilmes()
@@ -76,19 +77,27 @@ app.get('/v2/AcmeFilmes/filmes', cors(), async function (request, response, next
     }
 })
 
-app.get('/v2/AcmeFilmes/filmes/filtro', cors(), async function (request, response, next) {
-    let nomeFilme = request.query.nomeDoFilme
-    let infoFilmes = await controllerFilmes.getFilmeNome(nomeFilme)
+app.get('/v2/AcmeFilmes/filmes/:id', cors(), async function(request, response, next){
+    let idFilme = request.params.id
+    let dadosFilme = await controllerFilmes.getBuscarFilme(idFilme)
 
-    if (infoFilmes) {
-        response.json(infoFilmes)
-        response.status(200);
-    } else {
-        response.json({ message: 'nenhum registro encontrado' })
-        response.status(404)
-    }
-
+    response.json(dadosFilme)
+    response.status(dadosFilme.status_code)
 })
+
+// app.get('/v2/AcmeFilmes/filmes/filtro', cors(), async function (request, response, next) {
+//     let nomeFilme = request.query.nomeDoFilme
+//     let infoFilmes = await controllerFilmes.getFilmeNome(nomeFilme)
+
+//     if (infoFilmes) {
+//         response.json(infoFilmes)
+//         response.status(200);
+//     } else {
+//         response.json({ message: 'nenhum registro encontrado' })
+//         response.status(404)
+//     }
+
+// })
 
 
 app.listen(8080, function () {

@@ -6,25 +6,26 @@
  * autor: Jessica Pereira dos Santos                                                          *
  * versão:1.0                                                                                 *
  *********************************************************************************************/
+const message = require('../modulo/config.js')
 const FilmesDAO = require('../model/DAO/filme.js')
 
 // funcao para inserir um novo filme no banco de dados 
-const setInserirNovoFilme = async function(){
+const setInserirNovoFilme = async function () {
 
 }
 
 // funcao para atualizar um filme eistente
-const setAtualizarFilme = async function(){
+const setAtualizarFilme = async function () {
 
 }
 
 // funcao para excluir um filme existente 
-const setExcluirFilme = async function(){
+const setExcluirFilme = async function () {
 
 }
 
 // funcao para retor todos os filmes do banco de dados
-const getListarFilmes = async function(){
+const getListarFilmes = async function () {
 
     // cria uma variavel tipo json
     let filmesJson = {}
@@ -33,35 +34,55 @@ const getListarFilmes = async function(){
     let dadosFilmes = await FilmesDAO.selectAllFilmes()
 
     // verifica se existe, dados retornados do DAO
-    if (dadosFilmes){
+    if (dadosFilmes) {
         // criando o json para retornar para o app
         filmesJson.filmes = dadosFilmes;
         filmesJson.quantidade = dadosFilmes.length;
         filmesJson.status_code = 200;
         // retorna o json montado
         return filmesJson
-    }else{
+    } else {
         // return flse quando não houverem dados 
         return false
     }
 }
 
-const getFilmeNome = async function(nome){
-    let nomeFilme = nome
-    let infoFilmeJson = {}
-    let info = await FilmesDAO.selectByNameFilme(nomeFilme)
+// const getFilmeNome = async function(nome){
+//     let nomeFilme = nome
+//     let infoFilmeJson = {}
+//     let info = await FilmesDAO.selectByNameFilme(nomeFilme)
 
-    if(info){
-        infoFilmeJson.filmes = info
-        infoFilmeJson.status_code = 200;
-        return infoFilmeJson
-    }else{
-        return false
-    }
-}
+//     if(info){
+//         infoFilmeJson.filmes = info
+//         infoFilmeJson.status_code = 200;
+//         return infoFilmeJson
+//     }else{
+//         return false
+//     }
+// }
 
 // funcao para buscar um filme pelo id 
-const getBuscarFilme = async function(){
+const getBuscarFilme = async function (id) {
+
+    // recebe o id do filme
+    let idFilme = id
+    let filmeJSON = {}
+
+    if (idFilme == '' || idFilme == undefined || isNaN(idFilme)) {
+        return message.ERROR_INVALID_ID
+    } else {
+        let dadosFilme = await FilmesDAO.selectByIdFilme(idFilme)
+
+        if (dadosFilme) {
+            filmeJSON.filme = dadosFilme,
+                filmeJSON.status_code = 200
+
+            return filmeJSON
+        }else{
+            return message.ERROR_NOT_FOUND
+        }
+    }
+
 
 }
 
@@ -70,7 +91,6 @@ module.exports = {
     setAtualizarFilme,
     setExcluirFilme,
     getListarFilmes,
-    getBuscarFilme,
-    getFilmeNome
+    getBuscarFilme
 }
 
