@@ -14,7 +14,28 @@ const prisma = new PrismaClient();
 // inserir um novo filme
 const insertFilme = async function (dadosFilme) {
     try {
-        let sql = ` insert into tbl_filme (
+        let sql
+
+        if (dadosFilme.data_relancamento == null || dadosFilme.data_relancamento == '') {
+            sql = ` insert into tbl_filme (
+                nome, 
+                sinopse,
+                data_lancamento,
+                data_relancamento,
+                duracao,
+                foto_capa,
+                valor_unitario
+            ) values (
+                '${dadosFilme.nome}',
+                '${dadosFilme.sinopse}',
+                '${dadosFilme.data_lancamento}',
+                null,
+                '${dadosFilme.duracao}',
+                '${dadosFilme.foto_capa}',
+                '${dadosFilme.valor_unitario}'
+            )`;
+        }else{
+            sql = ` insert into tbl_filme (
             nome, 
             sinopse,
             data_lancamento,
@@ -31,6 +52,8 @@ const insertFilme = async function (dadosFilme) {
             '${dadosFilme.foto_capa}',
             '${dadosFilme.valor_unitario}'
         )`;
+        }
+        
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -77,17 +100,6 @@ const selectAllFilmes = async function () {
     
 }
 
-// const selectByNameFilme = async function (nome) {
-//     let nomeFilme = nome
-//     let sql = `select * from tbl_filme where nome like '%${nomeFilme}%'`
-//     let rsFilmes = await prisma.$queryRawUnsafe(sql);
-
-//     if (rsFilmes.length > 0)
-//         return rsFilmes
-//     else
-//         return false
-// }
-
 // buscar o flme existente filtrando pelo id 
 const selectByIdFilme = async function (id) {
 
@@ -112,5 +124,4 @@ module.exports = {
     deleteFilme,
     selectAllFilmes,
     selectByIdFilme
-    // selectByNameFilme
 }

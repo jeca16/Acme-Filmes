@@ -31,6 +31,10 @@ let resultDadosFilme ={}
             resultDadosFilme.status_code    = message.SUCCESS_CREATED_ITEM.status_code,
             resultDadosFilme.message        = message.SUCCESS_CREATED_ITEM.message,
             resultDadosFilme.filme          = dadosFilme
+
+            return resultDadosFilme
+        }else{
+            return message.ERROR_INTERNAL_SERVER_BD
         }
     }
 }
@@ -67,22 +71,6 @@ const getListarFilmes = async function () {
         return message.ERROR_INTERNAL_SERVER_BD
     }
 }
-
-// const getFilmeNome = async function(nome){
-//     let nomeFilme = nome
-//     let infoFilmeJson = {}
-//     let info = await FilmesDAO.selectByNameFilme(nomeFilme)
-
-//     if(info){
-//         infoFilmeJson.filmes = info
-//         infoFilmeJson.status_code = 200;
-//         return infoFilmeJson
-//     }else{
-//         return false
-//     }
-// }
-
-
 
 
 
