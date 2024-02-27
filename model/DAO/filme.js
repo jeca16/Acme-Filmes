@@ -16,7 +16,7 @@ const insertFilme = async function (dadosFilme) {
     try {
         let sql
 
-        if (dadosFilme.data_relancamento == null || dadosFilme.data_relancamento == '') {
+        if (dadosFilme.data_relancamento == null || dadosFilme.data_relancamento == '' || dadosFilme.data_relancamento == undefined) {
             sql = ` insert into tbl_filme (
                 nome, 
                 sinopse,
