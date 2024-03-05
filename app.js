@@ -88,7 +88,7 @@ app.get('/v2/AcmeFilmes/filmes/:id', cors(), async function(request, response, n
 
 // Endpoint: inserir novos filmes no banco de dados
 // não esquecer de colocar o bodyParser ja que ele define a forma de chagada dos dados  
-app.post('/v1/AcmeFilmes/filme/', cors(), bodyParserJSON, async function(request, response, next){
+app.post('/v2/AcmeFilmes/filme/', cors(), bodyParserJSON, async function(request, response, next){
 
     // receb dados encaminhados na requisição do body (ja vem em json)
     let dadosBody = request.body
