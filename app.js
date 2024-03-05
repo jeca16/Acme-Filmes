@@ -40,7 +40,7 @@ app.use((request, response, next) => {
 })
 
 // cria um onjeto do tipo json para recebr o resultados via body nas requisições post ou put
-const bodyParserJSON = bodyParser.json
+const bodyParserJSON = bodyParser.json()
 
 /**************** imports de arquivos e bibliotecas do projeto ****************/
 const controllerFilmes = require('./controller/controller_filme.js')
@@ -88,10 +88,11 @@ app.get('/v2/AcmeFilmes/filmes/:id', cors(), async function(request, response, n
 
 // Endpoint: inserir novos filmes no banco de dados
 // não esquecer de colocar o bodyParser ja que ele define a forma de chagada dos dados  
-app.post('/v2/AcmeFilmes/filme/', cors(), bodyParserJSON, async function(request, response, next){
+app.post('/v2/AcmeFilmes/filme', cors(), bodyParserJSON, async function(request, response, next){
 
     // receb dados encaminhados na requisição do body (ja vem em json)
     let dadosBody = request.body
+    
 
     // encaminha dados para a controller enviar para o bd
     let resultDados = await controllerFilmes.setInserirNovoFilme(dadosBody)
