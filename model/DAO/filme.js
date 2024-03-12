@@ -86,6 +86,15 @@ const updateFilme = async function (id) {
 // excluir um filme exister filtrando pelo id
 const deleteFilme = async function (id) {
 
+    try {
+        let sql = `delete fron tbl_filme where id = ${id}`
+
+        let filmes = await prisma.$executeRawUnsafe(sql)
+        return filmes
+
+    } catch (error) {
+        return false
+    }
 }
 
 // lista todos os filmes existentes na tabela 

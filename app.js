@@ -90,16 +90,25 @@ app.get('/v2/AcmeFilmes/filmes/:id', cors(), async function(request, response, n
 // não esquecer de colocar o bodyParser ja que ele define a forma de chagada dos dados  
 app.post('/v2/AcmeFilmes/filme', cors(), bodyParserJSON, async function(request, response, next){
 
+    let contentType = request.headers['content-type']
+    
     // receb dados encaminhados na requisição do body (ja vem em json)
     let dadosBody = request.body
     
 
     // encaminha dados para a controller enviar para o bd
-    let resultDados = await controllerFilmes.setInserirNovoFilme(dadosBody)
+    let resultDados = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
 } )
+
+app.delete('/v1/AcmeFilmes/filmes/:id', cors(), async function(request, response, next){
+    let id = request.params.id
+    let filmeDeleted = await controllerFilmes.setExcluirFilme(id)
+
+    response.status(filmeDeleted.status_code)
+})
 
 app.listen(8080, function () {
     console.log('API funcionando e aguardando requisições')
