@@ -9,7 +9,7 @@
 const { PrismaClient } = require('@prisma/client');
 
 // instanciando o objeto prisma com as caracteristicas do prisma client
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 // inserir um novo filme
 const insertFilme = async function (dadosFilme) {
@@ -92,7 +92,7 @@ const selectAllFilmes = async function () {
 
     // executa o scriptsql no banco de dados e recebe o retorno dos dados na variavel rsFilmes
     let rsFilmes = await prisma.$queryRawUnsafe(sql);
-        return rsFilmes
+    console.log(rsFilmes)
         
     } catch (error) {
         return false
