@@ -103,11 +103,29 @@ app.post('/v2/AcmeFilmes/filme', cors(), bodyParserJSON, async function(request,
     response.json(resultDados)
 } )
 
-app.delete('/v1/AcmeFilmes/filmes/:id', cors(), async function(request, response, next){
+app.delete('/v2/AcmeFilmes/filmes/delete/:id', cors(), async function(request, response, next){
     let id = request.params.id
     let filmeDeleted = await controllerFilmes.setExcluirFilme(id)
 
     response.status(filmeDeleted.status_code)
+    response.json(filmeDeleted.message)
+})
+
+app.put('/v2/AcmeFilmes/filmes/:id', cors(), bodyParserJSON, async function(request, response, next){
+    
+    // receb dados encaminhados na requisição do body (ja vem em json)
+    let dadosFilme = request.body
+    let id = request.params.id
+    let contentType = request.headers['content-type']
+    
+
+    // encaminha dados para a controller enviar para o bd
+    let resultDados = await controllerFilmes.setAtualizarFilme(dadosFilme, id, contentType)
+
+    
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
 })
 
 app.listen(8080, function () {

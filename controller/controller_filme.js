@@ -11,8 +11,6 @@ const FilmesDAO = require('../model/DAO/filme.js')
 
 // funcao para inserir um novo filme no banco de dados 
 const setInserirNovoFilme = async function (dadosFilme, contentType) {
-
-
     try {
         if (String(contentType).toLowerCase() == 'application/json') {
 
@@ -70,8 +68,58 @@ const setInserirNovoFilme = async function (dadosFilme, contentType) {
 }
 
 // funcao para atualizar um filme eistente
-const setAtualizarFilme = async function () {
+const setAtualizarFilme = async function (dadosFilme, id, contentType) {
+    try {
+        if (String(contentType).toLowerCase() == 'application/json') {
 
+            let resultDadosFilme = {}
+
+            if (dadosFilme.nome == '' || dadosFilme.nome == undefined || dadosFilme.nome.length > 80 ||
+                dadosFilme.sinopse == '' || dadosFilme.sinopse == undefined || dadosFilme.sinopse.length > 65000 ||
+                dadosFilme.duracao == '' || dadosFilme.duracao == undefined || dadosFilme.duracao.length > 8 ||
+                dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento.length != 10 ||
+                dadosFilme.foto_capa == '' || dadosFilme.foto_capa == undefined || dadosFilme.foto_capa.length > 200 ||
+                dadosFilme.valor_unitario.length > 8
+            ) {
+                return message.ERROR_REQUIRED_FIELDS
+            } else {
+
+                let dadosValidated = false;
+
+                if (dadosFilme.data_relancamento != null &&
+                    dadosFilme.data_relancamento != undefined &&
+                    dadosFilme.data_relancamento != '') {
+                    if (dadosFilme.data_relancamento.length != 10) {
+                        return message.ERROR_REQUIRED_FIELDS
+                    } else {
+                        dadosValidated = true
+                    }
+                } else {
+                    dadosValidated = true
+                }
+
+                if (dadosValidated == true) {
+                    let atualizarFilme = await FilmesDAO.updateFilme(dadosFilme, id)
+
+                    if (atualizarFilme == true) {
+                            resultDadosFilme.status = message.SUCCESS_UPDATED_ITEM.status,
+                            resultDadosFilme.status_code = message.SUCCESS_UPDATED_ITEM.status_code,
+                            resultDadosFilme.message = message.SUCCESS_UPDATED_ITEM.message,
+                            resultDadosFilme.filme = dadosFilme
+
+                        return resultDadosFilme
+
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_BD
+                    }
+                }
+            }
+        } else {
+            return message.ERROR_CONTENT_TYPE
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
 }
 
 // funcao para excluir um filme existente 
