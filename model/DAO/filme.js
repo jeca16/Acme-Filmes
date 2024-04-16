@@ -11,9 +11,12 @@ const { PrismaClient } = require('@prisma/client');
 // instanciando o objeto prisma com as caracteristicas do prisma client
 const prisma = new PrismaClient()
 
+
+/************************ Filmes ************************ */
+
 // inserir um novo filme
 const insertFilme = async function (dadosFilme) {
-    try {
+     try {
         let sql
 
         if (dadosFilme.data_relancamento == null || dadosFilme.data_relancamento == '' || dadosFilme.data_relancamento == undefined) {
@@ -43,7 +46,7 @@ const insertFilme = async function (dadosFilme) {
             duracao,
             foto_capa,
             valor_unitario
-        ) values (
+       ) values (
             '${dadosFilme.nome}',
             '${dadosFilme.sinopse}',
             '${dadosFilme.data_lancamento}',
@@ -171,11 +174,26 @@ const selectByIdFilme = async function (id) {
 
 }
 
+const selectByNameFilme = async function (search) {
+    try {
+        const sql = `select id,REPLACE(nome,"${coringa}","'") AS nome,REPLACE(sinopse,"${coringa}","'") AS sinopse,duracao,data_lancamento,data_relancamento,foto_capa,foto_fundo,valor_unitario,cor from tbl_filme WHERE nome LIKE "%${search}%"`;
+        let rsFilmes = await prisma.$queryRawUnsafe(sql);
+        return rsFilmes
+    } catch (error) {
+        return false
+    }
+}
+
+
+
+
+
 module.exports = {
     insertFilme,
     updateFilme,
     deleteFilme,
     selectAllFilmes,
     selectByIdFilme,
-    idFilme
+    idFilme,
+    selectByNameFilme
 }

@@ -9,6 +9,8 @@
 const message = require('../modulo/config.js')
 const FilmesDAO = require('../model/DAO/filme.js')
 
+/************************ Filmes ************************ */
+
 // funcao para inserir um novo filme no banco de dados 
 const setInserirNovoFilme = async function (dadosFilme, contentType) {
     try {
@@ -172,7 +174,6 @@ const getListarFilmes = async function () {
     }
 }
 
-
 // funcao para buscar um filme pelo id 
 const getBuscarFilme = async function (id) {
 
@@ -201,11 +202,40 @@ const getBuscarFilme = async function (id) {
     }
 }
 
+const getBuscarFilmeNome = async function (search) {
+    let nomeFilme = search
+    console.log(nomeFilme)
+    let filmesJSON = {}
+    if (nomeFilme == '' ||nomeFilme == undefined) {
+        return message.ERROR_INVALID_ID; //400
+    } else {
+        let dadosFilme = await FilmesDAO.selectByNameFilme(nomeFilme);
+        if (dadosFilme) {
+            if(dadosFilme.length>0){
+                filmesJSON.filmes = dadosFilme;
+                filmesJSON.quantidade = dadosFilme.length;
+                filmesJSON.status_code = 200;
+                return filmesJSON;
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+        } else {
+            return message.ERROR_INTERNAL_SERVER_BD
+        }
+    }
+
+}
+
+
+
 module.exports = {
     setInserirNovoFilme,
     setAtualizarFilme,
     setExcluirFilme,
     getListarFilmes,
-    getBuscarFilme
+    getBuscarFilme,
+    getBuscarFilmeNome,
+
+  
 }
 

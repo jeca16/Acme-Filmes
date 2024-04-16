@@ -44,6 +44,9 @@ const bodyParserJSON = bodyParser.json()
 
 /**************** imports de arquivos e bibliotecas do projeto ****************/
 const controllerFilmes = require('./controller/controller_filme.js')
+const controllerAtores = require('./controller/controller_atores.js')
+const controllerGenero = require('./controller/controller_genero.js')
+
 /******************************************************************************/
 
 app.get('/v1/AcmeFilmes/filmes', cors(), async function (request, response, next) {
@@ -61,7 +64,6 @@ app.get('/v2/AcmeFilmes/filmes', cors(), async function (request, response, next
     response.json(dadosFilmes)
     
 })
-
 
 app.get('/v1/AcmeFilmes/filme/:id', cors(), async function (request, response, next) {
     let Id = request.params.id
@@ -86,8 +88,6 @@ app.get('/v2/AcmeFilmes/filmes/:id', cors(), async function(request, response, n
    
 })
 
-// Endpoint: inserir novos filmes no banco de dados
-// não esquecer de colocar o bodyParser ja que ele define a forma de chagada dos dados  
 app.post('/v2/AcmeFilmes/filme', cors(), bodyParserJSON, async function(request, response, next){
 
     let contentType = request.headers['content-type']
@@ -127,6 +127,68 @@ app.put('/v2/AcmeFilmes/filmes/:id', cors(), bodyParserJSON, async function(requ
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
+
+app.get('/v2/acmefilmes/filme/nome', cors(), async function(request, response,){
+
+    let filmeNome = request.query.nome
+    let dadosFilmes = await controllerFilmes.getBuscarFilmeNome(filmeNome);
+    response.status(dadosFilmes.status_code);
+    response.json(dadosFilmes)
+})
+
+
+/************************ Atores ************************ */
+
+app.post('/v1/AcmeFilmes/ator', cors(), bodyParserJSON, async function(request, response, next){
+
+    let contentType = request.headers['content-type']
+    
+    // receb dados encaminhados na requisição do body (ja vem em json)
+    let dadosBody = request.body
+    
+
+    // encaminha dados para a controller enviar para o bd
+    let resultDados = await controllerAtores.setInserirNovoAtor(dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+} )
+
+app.get('/v2/AcmeFilmes/ator', cors(), async function (request, response, next) {
+
+    let dadosAtor = await controllerAtores.getListarAtores()
+
+    response.status(dadosAtor.status_code)
+    response.json(dadosAtor)
+    
+})
+
+app.get('/v2/AcmeFilmes/ator/:id', cors(), async function(request, response, next){
+    let idAtor = request.params.id
+    let dadosAtor = await controllerAtores.getBuscarAtor(idAtor)
+
+    response.status(dadosAtor.status_code)
+    response.json(dadosAtor)
+   
+})
+
+
+/************************ Genero ************************ */
+app.post('/v2/AcmeFilmes/genero', cors(), bodyParserJSON, async function(request, response, next){
+
+    let contentType = request.headers['content-type']
+    
+    // receb dados encaminhados na requisição do body (ja vem em json)
+    let dadosGenero = request.body
+    
+
+    // encaminha dados para a controller enviar para o bd
+    let resultDados = await controllerGenero.setInserirNovoGenero(dadosGenero, contentType)
+    
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+} )
 
 app.listen(8080, function () {
     console.log('API funcionando e aguardando requisições')
