@@ -9,7 +9,6 @@
 const message = require('../modulo/config.js')
 const FilmesDAO = require('../model/DAO/filme.js')
 
-/************************ Filmes ************************ */
 
 // funcao para inserir um novo filme no banco de dados 
 const setInserirNovoFilme = async function (dadosFilme, contentType) {
