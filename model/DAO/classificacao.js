@@ -1,5 +1,5 @@
 /**********************************************************************************************
- * objetivo: criar a interacao com o banco de dados MYSQL para fazer o crud de filmes         *
+ * objetivo: criar a interacao com o banco de dados MYSQL para fazer o crud de classificacao  *
  * data: 23/01/24                                                                             *
  * autor: Jessica Pereira dos Santos                                                          *
  * versão:1.0                                                                                 *

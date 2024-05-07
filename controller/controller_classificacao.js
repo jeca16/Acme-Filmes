@@ -1,6 +1,6 @@
 /**********************************************************************************************
  * objetivo: arquivo responsavel pela interacao entre o app e a  model,                       *
- * que teremos todas as tratativas e regra de negocio para o crud de filmes                   *
+ * que teremos todas as tratativas e regra de negocio para o crud de classificacao            *
  *                                                                                            *
  * data: 23/01/24                                                                             *
  * autor: Jessica Pereira dos Santos                                                          *

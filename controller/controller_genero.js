@@ -1,6 +1,6 @@
 /**********************************************************************************************
  * objetivo: arquivo responsavel pela interacao entre o app e a  model,                       *
- * que teremos todas as tratativas e regra de negocio para o crud de filmes                   *
+ * que teremos todas as tratativas e regra de negocio para o crud de generos                  *
  *                                                                                            *
  * data: 23/01/24                                                                             *
  * autor: Jessica Pereira dos Santos                                                          *
@@ -127,7 +127,7 @@ const getBuscarGenero = async function (id_genero){
 
         if (dadosGenero) {
             if (dadosGenero.length > 0) {
-                generoJSON.filme = dadosGenero,
+                generoJSON.genero = dadosGenero,
                 generoJSON.status_code = 200
 
                 return generoJSON

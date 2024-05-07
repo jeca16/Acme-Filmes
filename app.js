@@ -47,7 +47,7 @@ const controllerFilmes = require('./controller/controller_filme.js')
 const controllerAtores = require('./controller/controller_atores.js')
 const controllerGenero = require('./controller/controller_genero.js')
 const controllerClassificacao = require('./controller/controller_classificacao.js')
-
+const controllerDiretores = require('./controller/controller_diretores.js')
 
 /******************************************************************************/
 
@@ -250,16 +250,109 @@ app.post('/v2/AcmeFilmes/classificacao', cors(), bodyParserJSON, async function 
 })
 
 
+
+
 /************************ Atores ************************ */
 
 app.get('/v2/AcmeFilmes/atores', cors(), bodyParserJSON, async function (request, response, next){
+    let dadosAtor = await controllerAtores.getListarAtores()
+
+    response.status(dadosAtor.status_code)
+    response.json(dadosAtor)
 })
 
 app.get('/v2/AcmeFilmes/atores/:id', cors(), bodyParserJSON, async function(request, response, next){
+    let idAtor = request.params.id
+    let dadosAtor = await controllerAtores.getBuscarAtor(idAtor)
+
+    response.status(dadosAtor.status_code)
+    response.json(dadosAtor)
 })
 
-// app.put('/v2/AcmeFilmes/atores/')
+app.delete('/v2/AcmeFilmes/deletar/atores/:id', cors(), bodyParserJSON, async function(request, response, next){
+    let id_ator = request.params.id
+    let atorDeleted = await controllerAtores.setExcluirAtor(id_ator)
 
+    response.status(atorDeleted.status_code)
+    response.json(atorDeleted.message)
+})
+
+app.put('/v2/AcmeFilmes/atualizar/ator/:id', cors(), bodyParserJSON, async function(request, response, next){
+    let dadosAtor = request.body
+    let id_ator = request.params.id
+    let contentType = request.headers['content-type']
+
+    let resultDadosAtor = await controllerAtores.setAtualizarAtor(dadosAtor, id_ator, contentType)
+    response.status(resultDadosAtor.status_code)
+    response.json(resultDadosAtor)
+})
+
+app.post('/v2/AcmeFilmes/novoAtor', cors(), bodyParserJSON, async function (request, response, next){
+    let contentType = request.headers['content-type']
+    
+    // receb dados encaminhados na requisição do body (ja vem em json)
+    let dadosAtor = request.body
+    
+
+    // encaminha dados para a controller enviar para o bd
+    let resultDados = await controllerAtores.setInserirNovoAtor(dadosAtor, contentType)
+    
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+
+
+/************************ Diretores ************************ */
+
+app.get('/v2/AcmeFilmes/diretores', cors(), bodyParserJSON, async function (request, response, next){
+    let dadosDiretor = await controllerDiretores.getListarDiretores()
+
+    response.status(dadosDiretor.status_code)
+    response.json(dadosDiretor)
+})
+
+app.get('/v2/AcmeFilmes/diretores/:id', cors(), bodyParserJSON, async function(request, response, next){
+    let idDiretor = request.params.id
+    let dadosDiretor = await controllerDiretores.getBuscarDiretor(idDiretor)
+
+    response.status(dadosDiretor.status_code)
+    response.json(dadosDiretor)
+})
+
+app.delete('/v2/AcmeFilmes/deletar/diretores/:id', cors(), bodyParserJSON, async function(request, response, next){
+    let id_diretor = request.params.id
+    let diretorDeleted = await controllerDiretores.setExcluirDiretor(id_diretor)
+
+    response.status(diretorDeleted.status_code)
+    response.json(diretorDeleted.message)
+})
+
+app.put('/v2/AcmeFilmes/atualizar/diretor/:id', cors(), bodyParserJSON, async function(request, response, next){
+    let dadosDiretor = request.body
+    let id_diretor = request.params.id
+    let contentType = request.headers['content-type']
+
+    let resultDadosDiretor = await controllerDiretores.setAtualizarDiretor(dadosDiretor, id_diretor, contentType)
+    response.status(resultDadosDiretor.status_code)
+    response.json(resultDadosDiretor)
+})
+
+app.post('/v2/AcmeFilmes/novoDiretor', cors(), bodyParserJSON, async function (request, response, next){
+    let contentType = request.headers['content-type']
+    
+    // receb dados encaminhados na requisição do body (ja vem em json)
+    let dadosDiretor = request.body
+    
+
+    // encaminha dados para a controller enviar para o bd
+    let resultDados = await controllerDiretores.setInserirNovoDiretor(dadosDiretor, contentType)
+    
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
 
 
 

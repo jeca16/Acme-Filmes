@@ -24,31 +24,31 @@ const inserirAtor  = async function(dadosAtor){
                 data_nascimento,
                 data_falecimento,
                 sexo_id,
-                foto_ator,
+                foto_ator
             ) values (
-                '${dadosAtor.nome_ator}',
-                '${dadosAtor.sobre_ator}',
-                '${dadosAtor.data_nascimento}',
+                "${dadosAtor.nome_ator}",
+                "${dadosAtor.sobre_ator}",
+                "${dadosAtor.data_nascimento}",
                 null,
-                '${dadosAtor.sexo_id}',
-                '${dadosAtor.foto_ator}',
-            )`;
+                "${dadosAtor.sexo_id}",
+                "${dadosAtor.foto_ator}"
+            );`
         } else {
             sql = ` insert into tbl_atores (
-            nome_ator, 
-            sobre_ator,
-            data_nascimento,
-            data_falecimento,
-            sexo_id,
-            foto_ator,
-       ) values (
-            '${dadosAtor.nome_ator}',
-            '${dadosAtor.sobre_ator}',
-            '${dadosAtor.data_nascimento}',
-            '${dadosAtor.data_falecimento}',
-            '${dadosAtor.sexo_id}',
-            '${dadosAtor.foto_ator}',
-        )`;
+                nome_ator, 
+                sobre_ator,
+                data_nascimento,
+                data_falecimento,
+                sexo_id,
+                foto_ator
+            ) values (
+                "${dadosAtor.nome_ator}",
+                "${dadosAtor.sobre_ator}",
+                "${dadosAtor.data_nascimento}",
+                "${dadosAtor.data_falecimento}",
+                "${dadosAtor.sexo_id}",
+                "${dadosAtor.foto_ator}"
+            );`
 
         }
 
@@ -59,21 +59,59 @@ const inserirAtor  = async function(dadosAtor){
             return true
         } else {
             return false
-
         }
 
     } catch (error) {
+        console.log(error)
         return false
     }
 }
 
 const idAtor = async function(){
+    let idAtor = `select CAST( last_insert_id() AS DECIMAL) as id_ator from tbl_atores limit 1;`
+    let idAtores = await prisma.$queryRawUnsafe(idAtor)
+
+    return idAtores
 }
 
-const updateAtor = async function(){
+const updateAtor = async function(dadosAtor, id_ator){
+    try {
+        let sql 
+
+           sql =  `UPDATE tbl_atores
+                    SET nome_ator = '${dadosAtor.nome_ator}',
+                        sobre_ator = '${dadosAtor.sobre_ator}', 
+                        sexo_id = '${dadosAtor.sexo_id}',
+                        data_nascimento = '${dadosAtor.data_nascimento}',
+                        foto_ator = '${dadosAtor.foto_ator}'
+                        
+                    WHERE id_ator = ${id_ator}`
+        
+
+        let classificacaoAtualizado = await prisma.$executeRawUnsafe(sql)
+        if (classificacaoAtualizado) {
+            return true
+        } else {
+            return false
+
+        }
+        
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }
 
-const deleteAtor = async function(){
+const deleteAtor = async function(id_ator){
+    try {
+        let sql = `delete from tbl_atores where id_ator = ${id_ator}`
+
+        let ator = await prisma.$executeRawUnsafe(sql)
+        return ator
+
+    } catch (error) {
+        return false
+    }
 }
 
 const selectAllAtores = async function (){
@@ -102,5 +140,8 @@ const selectByIdAtor = async function (idAtor){
 module.exports = {
     inserirAtor,
     selectAllAtores,
-    selectByIdAtor
+    selectByIdAtor,
+    idAtor,
+    updateAtor,
+    deleteAtor,
 }
